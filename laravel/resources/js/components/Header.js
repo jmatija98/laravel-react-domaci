@@ -2,7 +2,8 @@ import { extend } from 'lodash';
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import Home from './Home';
-import About from './About'
+import About from './About';
+import Index from './task/Index'
 
 export default class Header extends Component {
     render(){
@@ -22,6 +23,9 @@ export default class Header extends Component {
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/about">About</Link>
                                 </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/task/index">Tasks</Link>
+                                </li>
                             </ul>
                             <form className="form-inline my-2 my-lg-0">
                                 <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"></input>
@@ -31,6 +35,7 @@ export default class Header extends Component {
                     </nav>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/about" component={About}/>
+                    <Route exact path="/task/index" component={Index}/>
                 </div>
             </Router>
         );
