@@ -14,6 +14,10 @@ export default class Add extends Component {
                         <input className="form-control" type="text" placeholder="Example: Math algebra test1..."></input>
                     </div>
                     <div className="form-group">
+                        <label>Student id</label>
+                        <input className="form-control form-control-sm" type="text"></input>
+                    </div>
+                    <div className="form-group">
                         <label>Grade</label>
                         <input className="form-control form-control-sm" type="text" placeholder="1-5"></input>
                     </div>
