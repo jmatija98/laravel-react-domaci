@@ -14,8 +14,8 @@ class HomeworkController extends Controller
      */
     public function index()
     {
-        $result=Homework::all();
-        return $result;
+        $h=Homework::all();
+        return $h;
     }
 
     /**

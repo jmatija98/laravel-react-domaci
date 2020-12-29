@@ -15,8 +15,8 @@ class StudentsController extends Controller
      */
     public function index()
     {
-        $s = Students::find(1);
-        return $s->homework;
+        $s = Students::all();
+        return $s;
     }
 
     /**
