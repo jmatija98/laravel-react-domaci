@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('homework','Api\HomeworkController@index');
+Route::get('students','Api\StudentsController@index');
