@@ -9,5 +9,6 @@ class Homework extends Model
     public function students()
     {
         return $this->belongsTo(Students::class);
+        $timestamps = false;
     }
 }

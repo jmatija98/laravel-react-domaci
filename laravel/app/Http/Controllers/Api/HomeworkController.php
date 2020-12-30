@@ -18,6 +18,8 @@ class HomeworkController extends Controller
         return $h;
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -36,7 +38,15 @@ class HomeworkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $homework = new Homework();
+        $homework->task=$request->task;
+        $homework->students_id=$request->students_id;
+        $homework->grade=$request->grade;
+        $homework->save();
+        /*echo '<script>alert("Welcome to Geeks for Geeks")</script>'; 
+        header('Location: http://127.0.0.1:8000/task');
+        exit;*/
+
     }
 
     /**
@@ -49,6 +59,8 @@ class HomeworkController extends Controller
     {
         //
     }
+
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -81,6 +93,7 @@ class HomeworkController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $h=Homework::find($id);
+        $h->delete();
     }
 }

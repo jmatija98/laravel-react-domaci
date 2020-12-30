@@ -15,9 +15,21 @@ export default class Listing extends Component {
     }
 
     componentDidMount(){
-        axios.get('http://localhost:8000/homework').then(response=>{
+        axios.get('http://127.0.0.1:8000/homework').then(response=>{
             this.setState({hw:response.data});
         });
+    }
+
+    onDelete(homework_id){
+        axios.delete('http://127.0.0.1:8000/task/delete/'+homework_id).then(response=>{
+            var h=this.state.hw;
+            for(var i=0;i<h.length;i++){
+                if(h[i].id==homework_id){
+                    h.splice(i,1);
+                    this.setState({hw:h})
+                }
+            }
+        }); 
     }
 
     render(){
@@ -28,9 +40,10 @@ export default class Listing extends Component {
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Task</th>
-                        <th scope="col">Student ID</th>
                         <th scope="col">Submit date</th>
                         <th scope="col">Grade</th>
+                        <th scope="col">Student ID</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,13 +56,14 @@ export default class Listing extends Component {
                                     <td>{homework.created_at}</td>
                                     <td>{homework.grade}</td>
                                     <td>{homework.students_id}</td>
+                                    <td><a href="#" class="btn btn-danger" onClick={this.onDelete.bind(this,homework.id)}>Delete</a></td>
                                 </tr>
                             )
                         })
                     }
                     
                 </tbody>
-                </table>
+                </table>    
             </div>
         );
     }

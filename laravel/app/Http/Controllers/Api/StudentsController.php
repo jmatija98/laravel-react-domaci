@@ -17,6 +17,7 @@ class StudentsController extends Controller
     {
         $s = Students::all();
         return $s;
+        
     }
 
     /**

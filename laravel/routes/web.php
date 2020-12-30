@@ -19,3 +19,9 @@ Route::get('/', function () {
 
 Route::get('homework','Api\HomeworkController@index');
 Route::get('students','Api\StudentsController@index');
+
+Route::post('task/store','Api\HomeworkController@store');
+
+Route::delete('task/delete/{id}','Api\HomeworkController@destroy');
+
+//Route::post('login','Api\HomeworkController@store');
