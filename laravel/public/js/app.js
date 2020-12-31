@@ -70530,7 +70530,7 @@ var About = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      axios.get('http://127.0.0.1:8000/students').then(function (response) {
+      axios.get('http://127.0.0.1:8000/api/students').then(function (response) {
         _this2.setState({
           st: response.data
         });
@@ -71084,7 +71084,7 @@ var Add = /*#__PURE__*/function (_Component) {
       axios.post('http://127.0.0.1:8000/task/store',hw).then(res=>Console.log(res.data));*/
       e.preventDefault();
       console.log(this.state);
-      fetch('http://127.0.0.1:8000/task/store', {
+      fetch('http://127.0.0.1:8000/api/task/store', {
         method: 'post',
         body: JSON.stringify(this.state),
         headers: {
@@ -71291,7 +71291,7 @@ var Listing = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_4___default.a.get('http://127.0.0.1:8000/homework').then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_4___default.a.get('http://127.0.0.1:8000/api/homework').then(function (response) {
         _this2.setState({
           hw: response.data
         });
@@ -71302,7 +71302,7 @@ var Listing = /*#__PURE__*/function (_Component) {
     value: function onDelete(homework_id) {
       var _this3 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_4___default.a["delete"]('http://127.0.0.1:8000/task/delete/' + homework_id).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_4___default.a["delete"]('http://127.0.0.1:8000/api/task/delete/' + homework_id).then(function (response) {
         var h = _this3.state.hw;
 
         for (var i = 0; i < h.length; i++) {

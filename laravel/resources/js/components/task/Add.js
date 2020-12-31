@@ -53,7 +53,7 @@ export default class Add extends Component {
         
         e.preventDefault();
         console.log(this.state);
-        fetch('http://127.0.0.1:8000/task/store',{
+        fetch('http://127.0.0.1:8000/api/task/store',{
             method:'post',
             body:JSON.stringify(
                 this.state

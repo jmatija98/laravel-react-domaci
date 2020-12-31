@@ -15,13 +15,13 @@ export default class Listing extends Component {
     }
 
     componentDidMount(){
-        axios.get('http://127.0.0.1:8000/homework').then(response=>{
+        axios.get('http://127.0.0.1:8000/api/homework').then(response=>{
             this.setState({hw:response.data});
         });
     }
 
     onDelete(homework_id){
-        axios.delete('http://127.0.0.1:8000/task/delete/'+homework_id).then(response=>{
+        axios.delete('http://127.0.0.1:8000/api/task/delete/'+homework_id).then(response=>{
             var h=this.state.hw;
             for(var i=0;i<h.length;i++){
                 if(h[i].id==homework_id){

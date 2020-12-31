@@ -12,7 +12,7 @@ export default class About extends Component {
     }
 
     componentDidMount(){
-        axios.get('http://127.0.0.1:8000/students').then(response=>{
+        axios.get('http://127.0.0.1:8000/api/students').then(response=>{
             this.setState({st:response.data});
         });
     }
