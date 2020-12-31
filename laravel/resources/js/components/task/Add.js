@@ -87,7 +87,7 @@ export default class Add extends Component {
                         <label>Grade</label>
                         <input className="form-control form-control-sm" type="text" id="grade"  onChange={this.onChangeGrade} placeholder="1-5"></input>
                     </div>
-                    <button type="submit" >Submit</button>
+                    <button type="submit" className="btn btn-primary" >Submit</button>
                     </form>  
             </div>
         );
