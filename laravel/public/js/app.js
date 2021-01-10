@@ -70537,8 +70537,29 @@ var About = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "onDelete",
+    value: function onDelete(students_id) {
+      var _this3 = this;
+
+      axios["delete"]('http://127.0.0.1:8000/api/about/delete/' + students_id).then(function (response) {
+        var s = _this3.state.st;
+
+        for (var i = 0; i < s.length; i++) {
+          if (s[i].id == students_id) {
+            s.splice(i, 1);
+
+            _this3.setState({
+              st: s
+            });
+          }
+        }
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this4 = this;
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
         className: "table"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", {
@@ -70547,8 +70568,14 @@ var About = /*#__PURE__*/function (_Component) {
         scope: "col"
       }, "First name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", {
         scope: "col"
-      }, "Last name"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, this.state.st.map(function (students) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, students.id), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, students.first_name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, students.last_name));
+      }, "Last name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", {
+        scope: "col"
+      }, "Action"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, this.state.st.map(function (students) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, students.id), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, students.first_name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, students.last_name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+          href: "#",
+          "class": "btn btn-danger",
+          onClick: _this4.onDelete.bind(_this4, students.id)
+        }, "Delete")));
       }))));
     }
   }]);

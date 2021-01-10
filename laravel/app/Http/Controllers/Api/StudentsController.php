@@ -49,7 +49,9 @@ class StudentsController extends Controller
      */
     public function show($id)
     {
-        //
+        $s = Students::find($id);
+        return $s->homework->task;
+        
     }
 
     /**
@@ -83,6 +85,7 @@ class StudentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $s=Students::find($id);
+        $s->delete();
     }
 }
