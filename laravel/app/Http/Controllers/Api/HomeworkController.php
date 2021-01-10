@@ -38,15 +38,20 @@ class HomeworkController extends Controller
      */
     public function store(Request $request)
     {
-        $homework = new Homework();
-        $homework->task=$request->task;
-        $homework->students_id=$request->students_id;
-        $homework->grade=$request->grade;
-        $homework->save();
-        /*echo '<script>alert("Welcome to Geeks for Geeks")</script>'; 
-        header('Location: http://127.0.0.1:8000/task');
-        exit;*/
-
+        $s = Students::find($request->students_id);
+        if($s!=null && $request->grade!=null && $request->students_id!=null && $request->grade>0 && $request->grade<=5 && $request->task!=null){
+            
+                $homework = new Homework();
+                $homework->task=$request->task;
+                $homework->students_id=$request->students_id;
+                $homework->grade=$request->grade;
+                $homework->save();
+            
+        }
+        else{
+            echo 'Invalid input'; 
+        }
+        
     }
 
     /**

@@ -71101,14 +71101,6 @@ var Add = /*#__PURE__*/function (_Component) {
   }, {
     key: "onSubmit",
     value: function onSubmit(e) {
-      /*e.preventDefault();
-      const hw={
-          task: this.state.task,
-          students_id:this.state.students_id,
-          grade:this.state.grade
-      }
-      console.log(hw);
-      axios.post('http://127.0.0.1:8000/task/store',hw).then(res=>Console.log(res.data));*/
       e.preventDefault();
       console.log(this.state);
       fetch('http://127.0.0.1:8000/api/task/store', {
