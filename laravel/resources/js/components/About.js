@@ -11,6 +11,8 @@ export default class About extends Component {
         }
     }
 
+    
+
     componentDidMount(){
         axios.get('http://127.0.0.1:8000/api/students').then(response=>{
             this.setState({st:response.data});
@@ -49,7 +51,7 @@ export default class About extends Component {
                                     <td>{students.id}</td>
                                     <td>{students.first_name}</td>
                                     <td>{students.last_name}</td>
-                                    <td><a href="#" class="btn btn-danger" onClick={this.onDelete.bind(this,students.id)}>Delete</a></td>
+                                    <td><a href="#" className="btn btn-danger" onClick={this.onDelete.bind(this,students.id)}>Delete</a></td>
                                 </tr>
                             )
                         })

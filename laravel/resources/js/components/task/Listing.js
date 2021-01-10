@@ -14,11 +14,13 @@ export default class Listing extends Component {
         }
     }
 
+    
     componentDidMount(){
         axios.get('http://127.0.0.1:8000/api/homework').then(response=>{
             this.setState({hw:response.data});
         });
     }
+
 
     onDelete(homework_id){
         axios.delete('http://127.0.0.1:8000/api/task/delete/'+homework_id).then(response=>{
@@ -56,7 +58,7 @@ export default class Listing extends Component {
                                     <td>{homework.created_at}</td>
                                     <td>{homework.grade}</td>
                                     <td>{homework.students_id}</td>
-                                    <td><a href="#" class="btn btn-danger" onClick={this.onDelete.bind(this,homework.id)}>Delete</a></td>
+                                    <td><a href="#" className="btn btn-danger" onClick={this.onDelete.bind(this,homework.id)}>Delete</a></td>
                                 </tr>
                             )
                         })

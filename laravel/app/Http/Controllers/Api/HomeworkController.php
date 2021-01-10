@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Homework;
+use App\Students;
 
 class HomeworkController extends Controller
 {
@@ -38,9 +39,10 @@ class HomeworkController extends Controller
      */
     public function store(Request $request)
     {
-        $s = Students::find($request->students_id);
+        $id=$request->students_id;
+        $s = Students::find($id);
         if($s!=null && $request->grade!=null && $request->students_id!=null && $request->grade>0 && $request->grade<=5 && $request->task!=null){
-            
+          
                 $homework = new Homework();
                 $homework->task=$request->task;
                 $homework->students_id=$request->students_id;

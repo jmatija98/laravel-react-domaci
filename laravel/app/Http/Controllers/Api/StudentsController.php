@@ -50,7 +50,7 @@ class StudentsController extends Controller
     public function show($id)
     {
         $s = Students::find($id);
-        return $s->homework->task;
+        return $s->homework;
         
     }
 
