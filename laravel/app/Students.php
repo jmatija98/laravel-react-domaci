@@ -10,4 +10,9 @@ class Students extends Model
     {
         return $this->hasMany(Homework::class);
     }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }
