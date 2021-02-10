@@ -1,15 +1,15 @@
 import { extend } from 'lodash';
 import React, {Component} from 'react';
 import axios from 'axios';
+import ReactDOM from 'react-dom';
 
 export default class Home extends Component {
-
-  
+    
     render(){
         return (
             <div>
                 <br></br>
-                <h1>Welcome back to our dashboard!</h1>
+                <h1>Welcome</h1>
                 <h3>Many new features like:</h3>
                 <br></br>
                <div className="list-group">

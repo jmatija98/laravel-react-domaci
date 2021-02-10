@@ -2,7 +2,6 @@ import { extend } from 'lodash';
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import Home from './Home';
-import Login from './Login';
 import About from './About';
 import Index from './task/Index'
 
@@ -19,7 +18,7 @@ export default class Header extends Component {
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul className="navbar-nav mr-auto">
                                 <li className="nav-item active">
-                                    <Link className="nav-link" to="/">Home</Link>
+                                    <Link className="nav-link" to="/home">Home</Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/about">Students</Link>
@@ -28,15 +27,15 @@ export default class Header extends Component {
                                     <Link className="nav-link" to="/task/index">Tasks</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/loginPage">Login</Link>
+                                    <a href='/logout' className="nav-link">Logout</a>
                                 </li>
                             </ul>
                         </div>
                     </nav>
-                    <Route exact path="/" component={Home}/>
+                    <Route exact path="/home" component={Home}/>
                     <Route exact path="/about" component={About}/>
                     <Route exact path="/task/index" component={Index}/>
-                    <Route exact path="/loginPage" component={Login}/>
+                    
                     
                 </div>
             </Router>

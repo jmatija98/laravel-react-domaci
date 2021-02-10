@@ -14,6 +14,7 @@
     </head>
     <body>
         <div id='app'></div>
+        <div id="example" data='{{ $data ?? ""}}'></div>
         <script src="/js/app.js"></script>
     </body>
 </html>

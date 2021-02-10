@@ -35,17 +35,26 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        $username=$request->user;
+        $username=$request->username;
         $password=$request->password;
+        
         if($username=='admin' && $password=='admin'){
             
             $request->session()->put('user',$username);
-            echo session('user');
+            //echo session('user');
+            return redirect('welcome');
         }
         else{
             echo 'invalid input';
         }
         
+    }
+
+    public function next(){
+        $data = [
+            'student'
+          ];
+        return view('student')->with('data', json_encode($data));
     }
 
    

@@ -23,7 +23,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('studentsById/{id}','Api\StudentsController@show');
 
     Route::post('task/store','Api\HomeworkController@store');
-    Route::post('login','Api\LoginController@store');
+    //Route::post('login','Api\LoginController@store');
+    
 
     Route::delete('task/delete/{id}','Api\HomeworkController@destroy');
     Route::delete('about/delete/{id}','Api\StudentsController@destroy');
