@@ -20,3 +20,4 @@ Route::get('logout',function(){
     return redirect('/');
 });
 Route::get('studentView','Api\DepartmentController@index');
+Route::get('faculty','Api\FacultyController@index');

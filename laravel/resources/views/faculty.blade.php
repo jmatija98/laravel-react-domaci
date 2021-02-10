@@ -14,7 +14,7 @@
     </head>
     <body>
         <div>
-            <h1>All departments</h1>
+            <h1>Our faculty</h1>
         </div>
         <div>
                 <table class="table">
@@ -22,17 +22,17 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Faculty id</th>
+                        <th scope="col">Location</th>
                     </tr>
                 </thead>
                 <tbody>
-                            @foreach($departments as $key => $data)
-                                <tr>
-                                    <td>{{$data->id}}</td>
-                                    <td>{{$data->name}}</td>
-                                    <td><a href='faculty'>{{$data->faculty_id}}</a></td>
-                                </tr>
-                            @endforeach
+                    @foreach($faculty as $key => $data)
+                        <tr>
+                            <td>{{$data->id}}</td>
+                            <td>{{$data->name}}</td>
+                            <td>{{$data->location}}</td>
+                        </tr>
+                    @endforeach   
                 </tbody>
                 </table>    
             </div>
