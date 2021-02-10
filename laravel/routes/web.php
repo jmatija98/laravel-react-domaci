@@ -19,4 +19,4 @@ Route::get('logout',function(){
     }
     return redirect('/');
 });
-Route::get('studentView','Api\LoginController@next');
+Route::get('studentView','Api\DepartmentController@index');

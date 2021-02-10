@@ -41,11 +41,13 @@ class LoginController extends Controller
         if($username=='admin' && $password=='admin'){
             
             $request->session()->put('user',$username);
-            //echo session('user');
             return redirect('welcome');
         }
         else{
-            echo 'invalid input';
+            echo '<script language="javascript">';
+            echo 'alert("Invalid input")';
+            echo '</script>';
+            return view('login');
         }
         
     }
