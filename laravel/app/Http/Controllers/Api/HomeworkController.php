@@ -43,12 +43,11 @@ class HomeworkController extends Controller
         $s = Students::find($id);
         if($s!=null && $request->grade!=null && $request->students_id!=null && $request->grade>0 && $request->grade<=5 && $request->task!=null){
           
-                $homework = new Homework();
-                $homework->task=$request->task;
-                $homework->students_id=$request->students_id;
-                $homework->grade=$request->grade;
-                $homework->save();
-            
+            $homework = new Homework();
+            $homework->task=$request->task;
+            $homework->students_id=$request->students_id;
+            $homework->grade=$request->grade;
+            $homework->save();
         }
         else{
             echo 'Invalid input'; 
