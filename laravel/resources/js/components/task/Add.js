@@ -54,9 +54,10 @@ export default class Add extends Component {
             }
         }).then(function(response){
             response.json().then(function(resp){
-                console.log(resp)
+                alert(resp)
             })
         })
+        this.form.reset();
     }
 
 
@@ -64,7 +65,7 @@ export default class Add extends Component {
     render(){
         return (
             <div>
-                <form onSubmit={this.onSubmit}>
+                <form onSubmit={this.onSubmit} ref={form => this.form = form}>
                     <div className="form-group">
                         <label>Task name:</label>
                         <input className="form-control" type="text" id="task" onChange={this.onChangeTask} placeholder="Example: Math algebra test1..."></input>

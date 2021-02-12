@@ -71123,15 +71123,21 @@ var Add = /*#__PURE__*/function (_Component) {
         }
       }).then(function (response) {
         response.json().then(function (resp) {
-          console.log(resp);
+          alert(resp);
         });
       });
+      this.form.reset();
     }
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
-        onSubmit: this.onSubmit
+        onSubmit: this.onSubmit,
+        ref: function ref(form) {
+          return _this2.form = form;
+        }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "form-group"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Task name:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
