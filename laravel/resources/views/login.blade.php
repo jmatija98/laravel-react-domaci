@@ -15,19 +15,19 @@
     <body>
         <div>
             <form action="user" method="POST">
-                <h3>Log in as teacher<h3>
+                <h3>Log in as a teacher<h3>
                 <div class="form-group">    
                     <label for="u">Username:</label>
                     <input class="form-control" type="text" name="username" id="u"></input>
                 </div>
                 <div class="form-group">
-                    <label for="p">Password</label>
+                    <label for="p">Password:</label>
                     <input class="form-control" type="password" name="password" id="p"></input>
                 </div>
             
             <button type="submit" class="btn btn-primary" >Submit</button>
             <br></br>
-            <a href='/studentView' class="btn btn-primary">Continue as a student</a>
+            <a href='/studentView' class="btn btn-primary">Continue as a student(without login)</a>
             </form>  
         </div>
     </body>
