@@ -37,7 +37,7 @@ export default class Listing extends Component {
     render(){
         return (
             <div>
-                <table className="table">
+                <table className="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">#</th>

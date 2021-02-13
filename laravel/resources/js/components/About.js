@@ -1,6 +1,12 @@
-import { extend } from 'lodash';
 import React, {Component} from 'react';
-
+import Student from './Student';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
+  
 
 export default class About extends Component {
 
@@ -31,16 +37,18 @@ export default class About extends Component {
         }); 
     }
 
+ 
+
     render(){
         return (
             <div>
-                <table className="table">
+                <table className="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">ID</th>
                         <th scope="col">First name</th>
                         <th scope="col">Last name</th>
                         <th scope="col">Action</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,10 +56,13 @@ export default class About extends Component {
                         this.state.st.map(students=>{
                             return(
                                 <tr>
-                                    <td>{students.id}</td>
+                                    <Router>    
                                     <td>{students.first_name}</td>
                                     <td>{students.last_name}</td>
                                     <td><a href="#" className="btn btn-danger" onClick={this.onDelete.bind(this,students.id)}>Delete</a></td>
+                                    <td><Link className="btn btn-info" to={{pathname: "/student", state: {id:students.id}}}>Details</Link></td>
+                                    <Route exact path='/student' component={Student}/>
+                                    </Router>
                                 </tr>
                             )
                         })
