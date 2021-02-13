@@ -18,7 +18,7 @@ class DepartmentController extends Controller
     {
         $departments=Department::all();
         
-        return view('student')->with(["departments" => $departments]);
+        return $departments;
     }
 
 
@@ -50,9 +50,11 @@ class DepartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        
+        $departments=Department::all();
+        return view('student')->with(["departments" => $departments]);
+
     }
 
     

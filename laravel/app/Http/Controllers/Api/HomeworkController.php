@@ -48,9 +48,14 @@ class HomeworkController extends Controller
             $homework->students_id=$request->students_id;
             $homework->grade=$request->grade;
             $homework->save();
+
+            echo json_encode("Task saved");
+           
         }
         else{
-            echo 'Invalid input'; 
+            echo json_encode("Invalid input");
+           
+            
         }
         
     }

@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import Home from './Home';
 import About from './About';
+import Department from './Department';
 import Index from './task/Index'
 
 export default class Header extends Component {
@@ -27,6 +28,9 @@ export default class Header extends Component {
                                     <Link className="nav-link" to="/task/index">Tasks</Link>
                                 </li>
                                 <li className="nav-item">
+                                    <Link className="nav-link" to="/departments">Departments</Link>
+                                </li>
+                                <li className="nav-item">
                                     <a href='/logout' className="nav-link">Logout</a>
                                 </li>
                             </ul>
@@ -35,6 +39,8 @@ export default class Header extends Component {
                     <Route exact path="/home" component={Home}/>
                     <Route exact path="/about" component={About}/>
                     <Route exact path="/task/index" component={Index}/>
+                    <Route exact path="/departments" component={Department}/>
+
                     
                     
                 </div>

@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['web']], function () {
     Route::get('homework','Api\HomeworkController@index');
     Route::get('students','Api\StudentsController@index');
+    
+    Route::get('department','Api\DepartmentController@index');
     Route::get('studentsById/{id}','Api\StudentsController@show');
 
     Route::post('task/store','Api\HomeworkController@store');
