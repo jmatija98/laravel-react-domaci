@@ -1,15 +1,12 @@
 import {create} from './create_report';
 import $ from 'jquery';
-function convert() {
+export function convert() {
 
-    const ticket = create('aa', 'aa', 'aaa', 'aaaaa', 'aaaaaaaa');
+    const report = create('aa', 'aa', 'aaa', 'aaaaa', 'aaaaaaaa');
 
     var data = {
-        'text': ticket
+        'text': report
     };
-
-    console.log(typeof data);
-    console.log(data)
 
     var token = btoa('milevJ:4dc40376da1d6e9dc515be148b1a9f21');
     $.ajax({
@@ -36,7 +33,7 @@ function convert() {
             const url = window.URL.createObjectURL(blob);
             var link = document.createElement('a');
             link.href = url;
-            link.download = 'test_ajax.pdf';
+            link.download = 'report.pdf';
             link.click();
             setTimeout(function () {
                 // For Firefox it is necessary to delay revoking the ObjectURL

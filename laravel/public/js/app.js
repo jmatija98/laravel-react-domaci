@@ -70694,6 +70694,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _convert_post_request__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../convert/post_request */ "./resources/js/convert/post_request.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -70715,6 +70716,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -70764,7 +70766,8 @@ var Department = /*#__PURE__*/function (_Component) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, department.id), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, department.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, department.faculty_id));
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         type: "button",
-        "class": "btn btn-dark"
+        "class": "btn btn-dark",
+        onClick: _convert_post_request__WEBPACK_IMPORTED_MODULE_4__["convert"]
       }, "Generate PDF"));
     }
   }]);
@@ -71648,6 +71651,86 @@ var Listing = /*#__PURE__*/function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
 
+
+/***/ }),
+
+/***/ "./resources/js/convert/create_report.js":
+/*!***********************************************!*\
+  !*** ./resources/js/convert/create_report.js ***!
+  \***********************************************/
+/*! exports provided: create */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create", function() { return create; });
+function create(predstava, datum, sediste, sala, cena) {
+  var report = "<!DOCTYPE html>\n<html>\n<head>\n<title>Izvestaj o katedrama</title>\n<link rel='shortcut icon' type='image/x-icon' href='img/drama.png' />\n<meta content='width=device-width, initial-scale=1.0' name='viewport'>\n<meta http-equiv='content-type' content='text-html; charset=utf-8'>\n\n<!-- Custom Fonts -->\n<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>\n</head>\n<style>\n\nbody {\n    margin: 0;\n    color: #ffffff;\n    font-family: 'Montserrat';\n    font-weight: 400;\n    font-size: 25px;\n  }\n\n  .container {\n    width: 795px;\n    margin: 0 auto;\n  }\n\n  section {\n    position: relative;\n    height: 280px;\n    width: 100%;\n    background-image: url(https://htmlpdfapi.com/uploads/images/568b96887261690f6dbe0000/content_background-concert-3.jpg?1451988615);\n    background-size: 100%;\n    background-repeat: no-repeat;\n    overflow: hidden;\n  }\n  section .left {\n    -moz-box-sizing: border-box;\n    -webkit-box-sizing: border-box;\n    box-sizing: border-box;\n    float: left;\n    width: 635px;\n    padding: 35px 0 0 60px;\n  }\n  section .right {\n    float: right;\n    width: 160px;\n    padding-top: 10px;\n  }\n  section .event {\n    margin-bottom: 10px;\n    margin-top: 10px;\n    font-weight: 700;\n    font-size: 0.6em;\n    line-height: 35px;\n    text-transform: uppercase;\n  }\n  section .title {\n    margin-bottom: 35px;\n    color: #F5A623;\n    font-family: 'Montserrat';\n    font-size: 2em;\n    line-height: 72px;\n  }\n  section .info {\n    font-size: 0.6em;\n    text-transform: uppercase;\n  }\n  section .seats {\n    margin-bottom: 15px;\n    font-size: 0.45em;\n    text-transform: uppercase;\n    text-align: right;\n  }\n  section .seats:last-child {\n    margin-bottom: 0;\n  }\n  section .seats span {\n    display: inline-block;\n    width: 80px;\n    margin-left: 15px;\n    margin-right: 15px;\n    padding: 10px 0;\n    color: #F5A623;\n    /* background: rgba(255, 255, 255, 0.5); */\n    font-family: 'Montserrat';\n    font-size: 1.5em;\n    font-weight: bold;\n    text-align: center;\n    vertical-align: middle;\n  }\n\n</style>\n<body>\n  <div class='container'>\n    <section>\n      <div class='left'>\n        <div class='title' id='title'>".concat(predstava, "</div>\n        <div class='event'>Cena: ").concat(cena, "</div>\n        <div class='info'>Pozori\u0161te na Terazijama // TRG NIKOLE PA\u0160I\u0106A 3 // 11000 BEOGRAD </div>\n      </div>\n      <div class='right'>\n        <div class='seats' id='datum'>Datum<span>").concat(datum, "</span></div>\n        <div class='seats' id='vreme'>Vreme<span>19:30h</span></div>\n        <div class='seats' id='sala'>Sala<span>").concat(sala, "</span></div>\n        <div class='seats' id='sediste'>Sedi\u0161te<span>").concat(sediste, "</span></div>\n      </div>\n    </section>\n  </div>\n</body>\n</html>");
+  return report;
+}
+
+/***/ }),
+
+/***/ "./resources/js/convert/post_request.js":
+/*!**********************************************!*\
+  !*** ./resources/js/convert/post_request.js ***!
+  \**********************************************/
+/*! exports provided: convert */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convert", function() { return convert; });
+/* harmony import */ var _create_report__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./create_report */ "./resources/js/convert/create_report.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function convert() {
+  var report = Object(_create_report__WEBPACK_IMPORTED_MODULE_0__["create"])('aa', 'aa', 'aaa', 'aaaaa', 'aaaaaaaa');
+  var data = {
+    'text': report
+  };
+  var token = btoa('milevJ:4dc40376da1d6e9dc515be148b1a9f21');
+  jquery__WEBPACK_IMPORTED_MODULE_1___default.a.ajax({
+    type: 'POST',
+    url: 'https://api.pdfcrowd.com/convert/',
+    data: data,
+    headers: {
+      'Authorization': 'Basic ' + token
+    },
+    xhrFields: {
+      responseType: 'blob'
+    },
+    success: function success(data, xhr) {
+      var blob = new Blob([data], {
+        type: 'application/pdf'
+      }); // IE doesn't allow using a blob object directly as link href
+      // instead it is necessary to use msSaveOrOpenBlob
+
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob);
+        return;
+      } // For other browsers:
+      // Create a link pointing to the ObjectURL containing the blob.
+
+
+      var url = window.URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = 'report.pdf';
+      link.click();
+      setTimeout(function () {
+        // For Firefox it is necessary to delay revoking the ObjectURL
+        window.URL.revokeObjectURL(url);
+      }, 100);
+    },
+    error: function error(xhr) {
+      alert(xhr.responseText);
+    }
+  });
+}
+;
 
 /***/ }),
 

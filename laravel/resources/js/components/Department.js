@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import axios from 'axios';
 
+import {convert} from "../convert/post_request";
+
 
 export default class Department extends Component {
 
@@ -45,7 +47,7 @@ export default class Department extends Component {
                     }
                 </tbody>
                 </table>    
-                <button type="button" class="btn btn-dark">Generate PDF</button>
+                <button type="button" class="btn btn-dark" onClick={convert}>Generate PDF</button>
             </div>
         );
     }

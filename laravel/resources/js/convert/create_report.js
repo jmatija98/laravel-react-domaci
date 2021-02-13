@@ -1,16 +1,13 @@
-function create(predstava, datum, sediste, sala, cena) {
+export function create(predstava, datum, sediste, sala, cena) {
 
-return ticket =
+const report =
 `<!DOCTYPE html>
 <html>
 <head>
-<title>Karta</title>
+<title>Izvestaj o katedrama</title>
 <link rel='shortcut icon' type='image/x-icon' href='img/drama.png' />
 <meta content='width=device-width, initial-scale=1.0' name='viewport'>
 <meta http-equiv='content-type' content='text-html; charset=utf-8'>
-
-<!-- Custom CSS -->
-<link href='ticket/ticketStyle.css' rel='stylesheet'>
 
 <!-- Custom Fonts -->
 <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
@@ -114,4 +111,6 @@ body {
   </div>
 </body>
 </html>`;
+
+return report;
 }
