@@ -184,6 +184,7 @@ module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/li
 
 var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
 var settle = __webpack_require__(/*! ./../core/settle */ "./node_modules/axios/lib/core/settle.js");
+var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
 var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
 var buildFullPath = __webpack_require__(/*! ../core/buildFullPath */ "./node_modules/axios/lib/core/buildFullPath.js");
 var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ "./node_modules/axios/lib/helpers/parseHeaders.js");
@@ -204,7 +205,7 @@ module.exports = function xhrAdapter(config) {
     // HTTP basic authentication
     if (config.auth) {
       var username = config.auth.username || '';
-      var password = config.auth.password || '';
+      var password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : '';
       requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
     }
 
@@ -285,8 +286,6 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
-
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookieName ?
         cookies.read(config.xsrfCookieName) :
@@ -352,7 +351,7 @@ module.exports = function xhrAdapter(config) {
       });
     }
 
-    if (requestData === undefined) {
+    if (!requestData) {
       requestData = null;
     }
 
@@ -420,6 +419,9 @@ axios.all = function all(promises) {
   return Promise.all(promises);
 };
 axios.spread = __webpack_require__(/*! ./helpers/spread */ "./node_modules/axios/lib/helpers/spread.js");
+
+// Expose isAxiosError
+axios.isAxiosError = __webpack_require__(/*! ./helpers/isAxiosError */ "./node_modules/axios/lib/helpers/isAxiosError.js");
 
 module.exports = axios;
 
@@ -629,9 +631,10 @@ Axios.prototype.getUri = function getUri(config) {
 utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
   /*eslint func-names:0*/
   Axios.prototype[method] = function(url, config) {
-    return this.request(utils.merge(config || {}, {
+    return this.request(mergeConfig(config || {}, {
       method: method,
-      url: url
+      url: url,
+      data: (config || {}).data
     }));
   };
 });
@@ -639,7 +642,7 @@ utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData
 utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
   /*eslint func-names:0*/
   Axios.prototype[method] = function(url, data, config) {
-    return this.request(utils.merge(config || {}, {
+    return this.request(mergeConfig(config || {}, {
       method: method,
       url: url,
       data: data
@@ -899,7 +902,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   error.response = response;
   error.isAxiosError = true;
 
-  error.toJSON = function() {
+  error.toJSON = function toJSON() {
     return {
       // Standard
       message: this.message,
@@ -948,59 +951,73 @@ module.exports = function mergeConfig(config1, config2) {
   config2 = config2 || {};
   var config = {};
 
-  var valueFromConfig2Keys = ['url', 'method', 'params', 'data'];
-  var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy'];
+  var valueFromConfig2Keys = ['url', 'method', 'data'];
+  var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy', 'params'];
   var defaultToConfig2Keys = [
-    'baseURL', 'url', 'transformRequest', 'transformResponse', 'paramsSerializer',
-    'timeout', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
-    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress',
-    'maxContentLength', 'validateStatus', 'maxRedirects', 'httpAgent',
-    'httpsAgent', 'cancelToken', 'socketPath'
+    'baseURL', 'transformRequest', 'transformResponse', 'paramsSerializer',
+    'timeout', 'timeoutMessage', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
+    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress', 'decompress',
+    'maxContentLength', 'maxBodyLength', 'maxRedirects', 'transport', 'httpAgent',
+    'httpsAgent', 'cancelToken', 'socketPath', 'responseEncoding'
   ];
+  var directMergeKeys = ['validateStatus'];
+
+  function getMergedValue(target, source) {
+    if (utils.isPlainObject(target) && utils.isPlainObject(source)) {
+      return utils.merge(target, source);
+    } else if (utils.isPlainObject(source)) {
+      return utils.merge({}, source);
+    } else if (utils.isArray(source)) {
+      return source.slice();
+    }
+    return source;
+  }
+
+  function mergeDeepProperties(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(config1[prop], config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
+    }
+  }
 
   utils.forEach(valueFromConfig2Keys, function valueFromConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(undefined, config2[prop]);
     }
   });
 
-  utils.forEach(mergeDeepPropertiesKeys, function mergeDeepProperties(prop) {
-    if (utils.isObject(config2[prop])) {
-      config[prop] = utils.deepMerge(config1[prop], config2[prop]);
-    } else if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (utils.isObject(config1[prop])) {
-      config[prop] = utils.deepMerge(config1[prop]);
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
-    }
-  });
+  utils.forEach(mergeDeepPropertiesKeys, mergeDeepProperties);
 
   utils.forEach(defaultToConfig2Keys, function defaultToConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(undefined, config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
+    }
+  });
+
+  utils.forEach(directMergeKeys, function merge(prop) {
+    if (prop in config2) {
+      config[prop] = getMergedValue(config1[prop], config2[prop]);
+    } else if (prop in config1) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
     }
   });
 
   var axiosKeys = valueFromConfig2Keys
     .concat(mergeDeepPropertiesKeys)
-    .concat(defaultToConfig2Keys);
+    .concat(defaultToConfig2Keys)
+    .concat(directMergeKeys);
 
   var otherKeys = Object
-    .keys(config2)
+    .keys(config1)
+    .concat(Object.keys(config2))
     .filter(function filterAxiosKeys(key) {
       return axiosKeys.indexOf(key) === -1;
     });
 
-  utils.forEach(otherKeys, function otherKeysDefaultToConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
-    }
-  });
+  utils.forEach(otherKeys, mergeDeepProperties);
 
   return config;
 };
@@ -1029,7 +1046,7 @@ var createError = __webpack_require__(/*! ./createError */ "./node_modules/axios
  */
 module.exports = function settle(resolve, reject, response) {
   var validateStatus = response.config.validateStatus;
-  if (!validateStatus || validateStatus(response.status)) {
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
     resolve(response);
   } else {
     reject(createError(
@@ -1161,6 +1178,7 @@ var defaults = {
   xsrfHeaderName: 'X-XSRF-TOKEN',
 
   maxContentLength: -1,
+  maxBodyLength: -1,
 
   validateStatus: function validateStatus(status) {
     return status >= 200 && status < 300;
@@ -1224,7 +1242,6 @@ var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/util
 
 function encode(val) {
   return encodeURIComponent(val).
-    replace(/%40/gi, '@').
     replace(/%3A/gi, ':').
     replace(/%24/g, '$').
     replace(/%2C/gi, ',').
@@ -1405,6 +1422,29 @@ module.exports = function isAbsoluteURL(url) {
   // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
   // by any combination of letters, digits, plus, period, or hyphen.
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/isAxiosError.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isAxiosError.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Determines whether the payload is an error thrown by Axios
+ *
+ * @param {*} payload The value to test
+ * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
+ */
+module.exports = function isAxiosError(payload) {
+  return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
 
@@ -1734,6 +1774,21 @@ function isObject(val) {
 }
 
 /**
+ * Determine if a value is a plain Object
+ *
+ * @param {Object} val The value to test
+ * @return {boolean} True if value is a plain Object, otherwise false
+ */
+function isPlainObject(val) {
+  if (toString.call(val) !== '[object Object]') {
+    return false;
+  }
+
+  var prototype = Object.getPrototypeOf(val);
+  return prototype === null || prototype === Object.prototype;
+}
+
+/**
  * Determine if a value is a Date
  *
  * @param {Object} val The value to test
@@ -1889,34 +1944,12 @@ function forEach(obj, fn) {
 function merge(/* obj1, obj2, obj3, ... */) {
   var result = {};
   function assignValue(val, key) {
-    if (typeof result[key] === 'object' && typeof val === 'object') {
+    if (isPlainObject(result[key]) && isPlainObject(val)) {
       result[key] = merge(result[key], val);
-    } else {
-      result[key] = val;
-    }
-  }
-
-  for (var i = 0, l = arguments.length; i < l; i++) {
-    forEach(arguments[i], assignValue);
-  }
-  return result;
-}
-
-/**
- * Function equal to merge with the difference being that no reference
- * to original objects is kept.
- *
- * @see merge
- * @param {Object} obj1 Object to merge
- * @returns {Object} Result of all merge properties
- */
-function deepMerge(/* obj1, obj2, obj3, ... */) {
-  var result = {};
-  function assignValue(val, key) {
-    if (typeof result[key] === 'object' && typeof val === 'object') {
-      result[key] = deepMerge(result[key], val);
-    } else if (typeof val === 'object') {
-      result[key] = deepMerge({}, val);
+    } else if (isPlainObject(val)) {
+      result[key] = merge({}, val);
+    } else if (isArray(val)) {
+      result[key] = val.slice();
     } else {
       result[key] = val;
     }
@@ -1947,6 +1980,19 @@ function extend(a, b, thisArg) {
   return a;
 }
 
+/**
+ * Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
+ *
+ * @param {string} content with BOM
+ * @return {string} content value without BOM
+ */
+function stripBOM(content) {
+  if (content.charCodeAt(0) === 0xFEFF) {
+    content = content.slice(1);
+  }
+  return content;
+}
+
 module.exports = {
   isArray: isArray,
   isArrayBuffer: isArrayBuffer,
@@ -1956,6 +2002,7 @@ module.exports = {
   isString: isString,
   isNumber: isNumber,
   isObject: isObject,
+  isPlainObject: isPlainObject,
   isUndefined: isUndefined,
   isDate: isDate,
   isFile: isFile,
@@ -1966,9 +2013,9 @@ module.exports = {
   isStandardBrowserEnv: isStandardBrowserEnv,
   forEach: forEach,
   merge: merge,
-  deepMerge: deepMerge,
   extend: extend,
-  trim: trim
+  trim: trim,
+  stripBOM: stripBOM
 };
 
 
@@ -71618,7 +71665,7 @@ var Listing = /*#__PURE__*/function (_Component) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create", function() { return create; });
 function create(predstava, datum, sediste, sala, cena) {
-  var report = "<!DOCTYPE html>\n<html>\n<head>\n<title>Izvestaj o katedrama</title>\n<link rel='shortcut icon' type='image/x-icon' href='img/drama.png' />\n<meta content='width=device-width, initial-scale=1.0' name='viewport'>\n<meta http-equiv='content-type' content='text-html; charset=utf-8'>\n\n<!-- Custom Fonts -->\n<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>\n</head>\n<style>\n\nbody {\n    margin: 0;\n    color: #ffffff;\n    font-family: 'Montserrat';\n    font-weight: 400;\n    font-size: 25px;\n  }\n\n  .container {\n    width: 795px;\n    margin: 0 auto;\n  }\n\n  section {\n    position: relative;\n    height: 280px;\n    width: 100%;\n    background-image: url(https://htmlpdfapi.com/uploads/images/568b96887261690f6dbe0000/content_background-concert-3.jpg?1451988615);\n    background-size: 100%;\n    background-repeat: no-repeat;\n    overflow: hidden;\n  }\n  section .left {\n    -moz-box-sizing: border-box;\n    -webkit-box-sizing: border-box;\n    box-sizing: border-box;\n    float: left;\n    width: 635px;\n    padding: 35px 0 0 60px;\n  }\n  section .right {\n    float: right;\n    width: 160px;\n    padding-top: 10px;\n  }\n  section .event {\n    margin-bottom: 10px;\n    margin-top: 10px;\n    font-weight: 700;\n    font-size: 0.6em;\n    line-height: 35px;\n    text-transform: uppercase;\n  }\n  section .title {\n    margin-bottom: 35px;\n    color: #F5A623;\n    font-family: 'Montserrat';\n    font-size: 2em;\n    line-height: 72px;\n  }\n  section .info {\n    font-size: 0.6em;\n    text-transform: uppercase;\n  }\n  section .seats {\n    margin-bottom: 15px;\n    font-size: 0.45em;\n    text-transform: uppercase;\n    text-align: right;\n  }\n  section .seats:last-child {\n    margin-bottom: 0;\n  }\n  section .seats span {\n    display: inline-block;\n    width: 80px;\n    margin-left: 15px;\n    margin-right: 15px;\n    padding: 10px 0;\n    color: #F5A623;\n    /* background: rgba(255, 255, 255, 0.5); */\n    font-family: 'Montserrat';\n    font-size: 1.5em;\n    font-weight: bold;\n    text-align: center;\n    vertical-align: middle;\n  }\n\n</style>\n<body>\n  <div class='container'>\n    <section>\n      <div class='left'>\n        <div class='title' id='title'>".concat(predstava, "</div>\n        <div class='event'>Cena: ").concat(cena, "</div>\n        <div class='info'>Pozori\u0161te na Terazijama // TRG NIKOLE PA\u0160I\u0106A 3 // 11000 BEOGRAD </div>\n      </div>\n      <div class='right'>\n        <div class='seats' id='datum'>Datum<span>").concat(datum, "</span></div>\n        <div class='seats' id='vreme'>Vreme<span>19:30h</span></div>\n        <div class='seats' id='sala'>Sala<span>").concat(sala, "</span></div>\n        <div class='seats' id='sediste'>Sedi\u0161te<span>").concat(sediste, "</span></div>\n      </div>\n    </section>\n  </div>\n</body>\n</html>");
+  var report = "<!DOCTYPE html>\n<html>\n<head>\n<title>Departments report</title>\n<link rel='shortcut icon' type='image/x-icon' href='img/drama.png' />\n<meta content='width=device-width, initial-scale=1.0' name='viewport'>\n<meta http-equiv='content-type' content='text-html; charset=utf-8'>\n\n<!-- Custom Fonts -->\n<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>\n</head>\n<style>\n\nbody {\n    margin: 0;\n    color: #ffffff;\n    font-family: 'Montserrat';\n    font-weight: 400;\n    font-size: 25px;\n  }\n\n  .container {\n    width: 795px;\n    margin: 0 auto;\n  }\n\n  section {\n    position: relative;\n    height: 500px;\n    color: orange;\n    width: 100%;\n    overflow: hidden;\n  }\n  section .left {\n    -moz-box-sizing: border-box;\n    -webkit-box-sizing: border-box;\n    box-sizing: border-box;\n    float: left;\n    width: 635px;\n    padding: 35px 0 0 60px;\n  }\n  section .right {\n    float: right;\n    width: 160px;\n    padding-top: 10px;\n  }\n  section .event {\n    margin-bottom: 10px;\n    margin-top: 10px;\n    font-weight: 700;\n    font-size: 0.6em;\n    line-height: 35px;\n    text-transform: uppercase;\n  }\n  section .title {\n    margin-bottom: 35px;\n    color: #F5A623;\n    font-family: 'Montserrat';\n    font-size: 2em;\n    line-height: 72px;\n  }\n  section .info {\n    font-size: 0.6em;\n    text-transform: uppercase;\n  }\n  section .seats {\n    margin-bottom: 15px;\n    font-size: 0.45em;\n    text-transform: uppercase;\n    text-align: right;\n  }\n  section .seats:last-child {\n    margin-bottom: 0;\n  }\n  section .seats span {\n    display: inline-block;\n    width: 80px;\n    margin-left: 15px;\n    margin-right: 15px;\n    padding: 10px 0;\n    color: #F5A623;\n    /* background: rgba(255, 255, 255, 0.5); */\n    font-family: 'Montserrat';\n    font-size: 1.5em;\n    font-weight: bold;\n    text-align: center;\n    vertical-align: middle;\n  }\n  .styled-table {\n    border-collapse: collapse;\n    margin: 25px 0;\n    font-size: 0.9em;\n    font-family: sans-serif;\n    min-width: 400px;\n    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);\n  }\n  .styled-table thead tr {\n    background-color: #009879;\n    color: #ffffff;\n    text-align: left;\n}\n.styled-table th,\n.styled-table td {\n    padding: 12px 15px;\n}\n  .styled-table tbody tr {\n    border-bottom: 1px solid #dddddd;\n  }\n\n.styled-table tbody tr:nth-of-type(even) {\n    background-color: #f3f3f3;\n  }\n\n.styled-table tbody tr:last-of-type {\n    border-bottom: 2px solid #009879;\n  }\n  .styled-table tbody tr.active-row {\n    font-weight: bold;\n    color: #009879;\n}\n\n</style>\n<body>\n  <div class='container'>\n    <section>\n    <h1>Departments report</h1>\n    <table class=\"styled-table\">\n    <tr>\n      <th>Id</th>\n      <th>Name</th>\n      <th>Faculty Id</th>\n    </tr>\n    <tr>\n      <td>1</td>\n      <td>Elab</td>\n      <td>1</td>\n    </tr>\n    <tr>\n      <td>2</td>\n      <td>Silab</td>\n      <td>1</td>\n    </tr>\n    <tr>\n      <td>3</td>\n      <td>Labsys</td>\n      <td>1</td>\n    </tr>\n  </table>\n    </section>\n  </div>\n</body>\n</html>";
   return report;
 }
 
@@ -71705,8 +71752,8 @@ function convert() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\xaamp\htdocs\laravel-react-domaci\laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\xaamp\htdocs\laravel-react-domaci\laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\laravel-react-domaci\laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\laravel-react-domaci\laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

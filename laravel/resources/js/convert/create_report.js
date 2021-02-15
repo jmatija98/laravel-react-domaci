@@ -4,7 +4,7 @@ const report =
 `<!DOCTYPE html>
 <html>
 <head>
-<title>Izvestaj o katedrama</title>
+<title>Departments report</title>
 <link rel='shortcut icon' type='image/x-icon' href='img/drama.png' />
 <meta content='width=device-width, initial-scale=1.0' name='viewport'>
 <meta http-equiv='content-type' content='text-html; charset=utf-8'>
@@ -29,11 +29,9 @@ body {
 
   section {
     position: relative;
-    height: 280px;
+    height: 500px;
+    color: orange;
     width: 100%;
-    background-image: url(https://htmlpdfapi.com/uploads/images/568b96887261690f6dbe0000/content_background-concert-3.jpg?1451988615);
-    background-size: 100%;
-    background-repeat: no-repeat;
     overflow: hidden;
   }
   section .left {
@@ -91,22 +89,66 @@ body {
     text-align: center;
     vertical-align: middle;
   }
+  .styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  }
+  .styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+  .styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+  }
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+  }
+  .styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
 
 </style>
 <body>
   <div class='container'>
     <section>
-      <div class='left'>
-        <div class='title' id='title'>${predstava}</div>
-        <div class='event'>Cena: ${cena}</div>
-        <div class='info'>Pozorište na Terazijama // TRG NIKOLE PAŠIĆA 3 // 11000 BEOGRAD </div>
-      </div>
-      <div class='right'>
-        <div class='seats' id='datum'>Datum<span>${datum}</span></div>
-        <div class='seats' id='vreme'>Vreme<span>19:30h</span></div>
-        <div class='seats' id='sala'>Sala<span>${sala}</span></div>
-        <div class='seats' id='sediste'>Sedište<span>${sediste}</span></div>
-      </div>
+    <h1>Departments report</h1>
+    <table class="styled-table">
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Faculty Id</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Elab</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Silab</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Labsys</td>
+      <td>1</td>
+    </tr>
+  </table>
     </section>
   </div>
 </body>
