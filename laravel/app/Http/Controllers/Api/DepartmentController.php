@@ -53,7 +53,8 @@ class DepartmentController extends Controller
     public function show()
     {
         $departments=Department::all();
-        return view('student')->with(["departments" => $departments]);
+        //return view('student')->with(["departments" => $departments]);
+        return view('datatables');
 
     }
 
