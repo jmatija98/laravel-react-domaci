@@ -8,7 +8,7 @@ export function convert() {
         'text': report
     };
 
-    var token = btoa('milevJ:4dc40376da1d6e9dc515be148b1a9f21');
+    var token = btoa('kascez:b9335427e0c8443499b9ee2f44b5de4e');
     $.ajax({
         type: 'POST',
         url: 'https://api.pdfcrowd.com/convert/',

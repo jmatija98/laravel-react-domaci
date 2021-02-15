@@ -38,7 +38,7 @@ export default class Footer extends Component {
                         </div>
                         
                         <div className="copyright col-xs-12 col-sm-3 col-sm-pull-6">
-                            <p> &copy; Matija Jovic 2020 </p>
+                            <p> &copy; Jovic, Segrt, Kascelan 2020 </p>
                         </div>
                         
                     </footer>
