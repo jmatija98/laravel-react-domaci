@@ -27,14 +27,14 @@ body {
     margin: 0 auto;
   }
 
-  section {
+  article {
     position: relative;
     height: 500px;
     color: orange;
     width: 100%;
     overflow: hidden;
   }
-  section .left {
+  article .left {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -42,12 +42,12 @@ body {
     width: 635px;
     padding: 35px 0 0 60px;
   }
-  section .right {
+  article .right {
     float: right;
     width: 160px;
     padding-top: 10px;
   }
-  section .event {
+  article .event {
     margin-bottom: 10px;
     margin-top: 10px;
     font-weight: 700;
@@ -55,27 +55,27 @@ body {
     line-height: 35px;
     text-transform: uppercase;
   }
-  section .title {
+  article .title {
     margin-bottom: 35px;
     color: #F5A623;
     font-family: 'Montserrat';
     font-size: 2em;
     line-height: 72px;
   }
-  section .info {
+  article .info {
     font-size: 0.6em;
     text-transform: uppercase;
   }
-  section .seats {
+  article .seats {
     margin-bottom: 15px;
     font-size: 0.45em;
     text-transform: uppercase;
     text-align: right;
   }
-  section .seats:last-child {
+  article .seats:last-child {
     margin-bottom: 0;
   }
-  section .seats span {
+  article .seats span {
     display: inline-block;
     width: 80px;
     margin-left: 15px;
@@ -125,32 +125,52 @@ body {
 </style>
 <body>
   <div class='container'>
-    <section>
+    <article>
     <h1>Departments report</h1>
     <table class="styled-table">
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Faculty Id</th>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>Elab</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Silab</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Labsys</td>
-      <td>1</td>
-    </tr>
-  </table>
-    </section>
-  </div>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Faculty Id</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Elab</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Silab</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Labsys</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>LABIS</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Marketing department</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>LABAI</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Mathematics department</td>
+        <td>1</td>
+      </tr>
+    </table>
+  </article>
+</div>
 </body>
 </html>`;
 
